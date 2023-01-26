@@ -1,0 +1,32 @@
+﻿@model TipoCuenta 
+
+@{
+    ViewData["Title"] = "Crear Tipo Cuenta";
+}
+
+<h1>Crear Tipo Cuenta</h1>
+<h5>Ejemplos: Prestamos, tarjetas de credito</h5>
+
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    @*muestra los TODOS "all" los errores y los pinta de rojo "text-danfer"*@
+
+
+@*crear un forlulario*@
+
+<form asp-action="Crear">
+    <div class="mb-3 ">
+        <label asp-for="Nombre" class="form-label">Nombre</label>
+        <input  type="text" asp-for="Nombre" class="form-control"/> @*tag helpers es poner los asp-form para que no se borre la info del usuario cuando guarda con un error*@
+        <span asp-validation-for="Nombre" class="text-danger"></span> @*para que salga el mensaje de validacion*@
+    </div>
+
+    <button type="submit" class="btn btn-primary">Enviar</button>
+    <a class="btn btn-secondary" asp-action="Index">Cancelar</a>
+
+
+</form>
+<!--Seccion para porner scrips, en este caso las validaciones-->
+@section Scripts 
+{
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,109 @@
+is_global = true
+build_property.TargetFramework = net6.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = ManejoPresupuesto
+build_property.RootNamespace = ManejoPresupuesto
+build_property.ProjectDir = C:\Users\fosorio\Desktop\Curso Udemy\Proyectos\ManejoPresupuesto\ManejoPresupuesto\
+build_property.RazorLangVersion = 6.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = C:\Users\fosorio\Desktop\Curso Udemy\Proyectos\ManejoPresupuesto\ManejoPresupuesto
+build_property._RazorSourceGeneratorDebug = 
+
+[C:/Users/fosorio/Desktop/Curso Udemy/Proyectos/ManejoPresupuesto/ManejoPresupuesto/Views/Categorias/Borrar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2F0ZWdvcmlhc1xCb3JyYXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/fosorio/Desktop/Curso Udemy/Proyectos/ManejoPresupuesto/ManejoPresupuesto/Views/Categorias/Crear.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2F0ZWdvcmlhc1xDcmVhci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/fosorio/Desktop/Curso Udemy/Proyectos/ManejoPresupuesto/ManejoPresupuesto/Views/Categorias/Editar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2F0ZWdvcmlhc1xFZGl0YXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/fosorio/Desktop/Curso Udemy/Proyectos/ManejoPresupuesto/ManejoPresupuesto/Views/Categorias/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2F0ZWdvcmlhc1xJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/fosorio/Desktop/Curso Udemy/Proyectos/ManejoPresupuesto/ManejoPresupuesto/Views/Cuentas/Borrar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ3VlbnRhc1xCb3JyYXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/fosorio/Desktop/Curso Udemy/Proyectos/ManejoPresupuesto/ManejoPresupuesto/Views/Cuentas/Crear.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ3VlbnRhc1xDcmVhci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/fosorio/Desktop/Curso Udemy/Proyectos/ManejoPresupuesto/ManejoPresupuesto/Views/Cuentas/Editar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ3VlbnRhc1xFZGl0YXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/fosorio/Desktop/Curso Udemy/Proyectos/ManejoPresupuesto/ManejoPresupuesto/Views/Home/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/fosorio/Desktop/Curso Udemy/Proyectos/ManejoPresupuesto/ManejoPresupuesto/Views/Home/NoEncontrado.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxOb0VuY29udHJhZG8uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/fosorio/Desktop/Curso Udemy/Proyectos/ManejoPresupuesto/ManejoPresupuesto/Views/Home/Privacy.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/fosorio/Desktop/Curso Udemy/Proyectos/ManejoPresupuesto/ManejoPresupuesto/Views/Shared/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/fosorio/Desktop/Curso Udemy/Proyectos/ManejoPresupuesto/ManejoPresupuesto/Views/Shared/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/fosorio/Desktop/Curso Udemy/Proyectos/ManejoPresupuesto/ManejoPresupuesto/Views/TiposCuentas/Borrar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGlwb3NDdWVudGFzXEJvcnJhci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/fosorio/Desktop/Curso Udemy/Proyectos/ManejoPresupuesto/ManejoPresupuesto/Views/TiposCuentas/Crear.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGlwb3NDdWVudGFzXENyZWFyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/fosorio/Desktop/Curso Udemy/Proyectos/ManejoPresupuesto/ManejoPresupuesto/Views/TiposCuentas/Editar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGlwb3NDdWVudGFzXEVkaXRhci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/fosorio/Desktop/Curso Udemy/Proyectos/ManejoPresupuesto/ManejoPresupuesto/Views/TiposCuentas/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGlwb3NDdWVudGFzXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/fosorio/Desktop/Curso Udemy/Proyectos/ManejoPresupuesto/ManejoPresupuesto/Views/Transacciones/Crear.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVHJhbnNhY2Npb25lc1xDcmVhci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/fosorio/Desktop/Curso Udemy/Proyectos/ManejoPresupuesto/ManejoPresupuesto/Views/Transacciones/Editar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVHJhbnNhY2Npb25lc1xFZGl0YXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/fosorio/Desktop/Curso Udemy/Proyectos/ManejoPresupuesto/ManejoPresupuesto/Views/Transacciones/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVHJhbnNhY2Npb25lc1xJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/fosorio/Desktop/Curso Udemy/Proyectos/ManejoPresupuesto/ManejoPresupuesto/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/fosorio/Desktop/Curso Udemy/Proyectos/ManejoPresupuesto/ManejoPresupuesto/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/fosorio/Desktop/Curso Udemy/Proyectos/ManejoPresupuesto/ManejoPresupuesto/Views/Cuentas/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ3VlbnRhc1xJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = b-05jcn8n5mf
+
+[C:/Users/fosorio/Desktop/Curso Udemy/Proyectos/ManejoPresupuesto/ManejoPresupuesto/Views/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = b-1p7shqym15
