@@ -23,7 +23,7 @@ namespace ManejoPresupuesto.Controllers
             var categorias = await repositorioCategorias.Obtener(usuarioId);
             return View(categorias);
         }
-
+        //vista de crear nueva categoria
         [HttpGet]
         public IActionResult Crear()
         {

@@ -11,7 +11,8 @@ namespace ManejoPresupuesto.Controllers
         private readonly IServicioUsuarios servicioUsuarios;
 
         //contructor (IRepositorioTiposCuentas repositoriotiposCuentas)  ya con esto tengo acceso a irepositorio
-        public TiposCuentasController(IRepositorioTiposCuentas repositorioTiposCuentas, IServicioUsuarios servicioUsuarios) //inyeccion 
+        public TiposCuentasController(IRepositorioTiposCuentas repositorioTiposCuentas, 
+            IServicioUsuarios servicioUsuarios) //inyeccion 
 
         {
             this.repositorioTiposCuentas = repositorioTiposCuentas;
@@ -31,7 +32,7 @@ namespace ManejoPresupuesto.Controllers
             return View();
         }
 
-        [HttpPost] //con este metodo se crea el usuario
+        [HttpPost] //con este metodo se crea tipo cuenta
         public async Task<IActionResult> Crear(TipoCuenta tipoCuenta)
         {
             if (!ModelState.IsValid) //si el modelo del estado es valido
