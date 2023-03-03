@@ -3,8 +3,6 @@ using ManejoPresupuesto.Models;
 using ManejoPresupuesto.Servicios;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Reflection;
-using System.Transactions;
 
 namespace ManejoPresupuesto.Controllers
 {
@@ -15,21 +13,99 @@ namespace ManejoPresupuesto.Controllers
         private readonly IRepositorioCategorias repositorioCategorias;
         private readonly IRepositorioTransacciones repositorioTransacciones;
         private readonly IMapper mapper;
+        private readonly IServicioReportes servicioReportes;
 
         public TransaccionesController(IServicioUsuarios servicioUsuarios,
             IRepositorioCuentas repositorioCuentas,
             IRepositorioCategorias repositorioCategorias,
             IRepositorioTransacciones repositorioTransacciones,
-            IMapper mapper)
+            IMapper mapper,
+            IServicioReportes servicioReportes)
         {
             this.servicioUsuarios = servicioUsuarios;
             this.repositorioCuentas = repositorioCuentas;
             this.repositorioCategorias = repositorioCategorias;
             this.repositorioTransacciones = repositorioTransacciones;
             this.mapper = mapper;
+            this.servicioReportes = servicioReportes;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index(int mes, int año)
+        {
+            var usuarioId = servicioUsuarios.ObtenerUsuarioId();
+            var modelo = await servicioReportes.ObtenerReporteTransaccionesDetalladas(usuarioId, mes, año, ViewBag);
+            return View(modelo);
+        }
+
+        public async Task<IActionResult> Semanal(int mes, int año)
+        {
+            var usuarioId = servicioUsuarios.ObtenerUsuarioId();
+            IEnumerable<ResultadoObtenerPorSemana> transaccionesPorSemana =
+                await servicioReportes.ObtenerReporteSemanal(usuarioId, mes, año, ViewBag);
+
+            var agrupado = transaccionesPorSemana.GroupBy(x => x.Semana).Select(x =>
+            new ResultadoObtenerPorSemana()
+            {
+                Semana = x.Key,
+                Ingresos = x.Where(x => x.TipoOperacionId == TipoOperacion.Ingreso)
+                    .Select(x => x.Monto).FirstOrDefault(),
+                Gastos = x.Where(x => x.TipoOperacionId == TipoOperacion.Gasto)
+                    .Select(x => x.Monto).FirstOrDefault(),
+            }).ToList();
+
+            if (año == 0 || mes == 0)
+            {
+                var hoy = DateTime.Today;
+                año = hoy.Year;
+                mes = hoy.Month;
+            }
+
+            var fechareferencia = new DateTime(año, mes, 1);
+            var diasDelMes = Enumerable.Range(1, fechareferencia.AddMonths(1).AddDays(-1).Day);
+
+            var diasSegmentados = diasDelMes.Chunk(7).ToList();//chunk divide de 7 en 7
+
+            for (int i = 0; i < diasSegmentados.Count(); i++)
+            {
+                var semana = i + 1;
+                var fechaInicio = new DateTime(año, mes, diasSegmentados[i].First());
+                var fechafin = new DateTime(año, mes, diasSegmentados[i].Last());
+                var grupoSemana = agrupado.FirstOrDefault(x => x.Semana == semana);
+
+                if (grupoSemana is null)
+
+                {
+                    agrupado.Add(new ResultadoObtenerPorSemana()
+                    {
+                        Semana = semana,
+                        fechaInicio = fechaInicio,
+                        fechaFin = fechafin
+                    });
+
+                }
+                else
+                {
+                    grupoSemana.fechaInicio = fechaInicio;
+                    grupoSemana.fechaFin = fechafin;
+                }
+            }
+            agrupado = agrupado.OrderByDescending(x => x.Semana).ToList();
+
+            var modelo = new ReporteSemanalViewModel();
+            modelo.TransaccionesPorSemana = agrupado;
+            modelo.Fechareferencia = fechareferencia;
+
+            return View(modelo);
+        }
+        public IActionResult Mensaul()
+        {
+            return View();
+        }
+        public IActionResult ExcelReporte()
+        {
+            return View();
+        }
+        public IActionResult Calendario()
         {
             return View();
         }
@@ -60,14 +136,14 @@ namespace ManejoPresupuesto.Controllers
                 return RedirectToAction("NoEncontrado", "Home");
             }
 
-            var categoria = repositorioCategorias.ObtenerPorId(modelo.CategoriaId,usuarioId);
+            var categoria = repositorioCategorias.ObtenerPorId(modelo.CategoriaId, usuarioId);
 
             if (categoria is null)
             {
                 return RedirectToAction("NoEncontrado", "Home");
             }
             modelo.UsuarioId = usuarioId;
-            if (modelo.TipoOperacionId ==TipoOperacion.Gasto)
+            if (modelo.TipoOperacionId == TipoOperacion.Gasto)
             {
                 modelo.Monto *= -1;
             }
@@ -81,7 +157,7 @@ namespace ManejoPresupuesto.Controllers
         {
             var usuarioId = servicioUsuarios.ObtenerUsuarioId();
             var transaccion = await repositorioTransacciones.ObtenerPorId(id, usuarioId);
-        
+
 
             if (transaccion is null)
             {
@@ -100,7 +176,7 @@ namespace ManejoPresupuesto.Controllers
             modelo.CuentaAnteriorId = transaccion.CuentaId;
             modelo.Categorias = await ObtenerCategorias(usuarioId, transaccion.TipoOperacionId);
             modelo.Cuentas = await ObtenerCuentas(usuarioId);
-            modelo.UrlRetorno= urlRetorno;
+            modelo.UrlRetorno = urlRetorno;
             return View(modelo);
         }
 
@@ -117,13 +193,13 @@ namespace ManejoPresupuesto.Controllers
 
             var cuenta = await repositorioCuentas.ObtenerPorId(modelo.CuentaId, usuarioId);
 
-                 if (cuenta is null) 
+            if (cuenta is null)
             {
                 return RedirectToAction("NoEncontrado", "Home");
             }
             var categoria = await repositorioCategorias.ObtenerPorId(modelo.CategoriaId, usuarioId);
 
-                 if (categoria is null)
+            if (categoria is null)
             {
                 return RedirectToAction("NoEncontrado", "Home");
             }
@@ -134,7 +210,7 @@ namespace ManejoPresupuesto.Controllers
                 transaccion.Monto *= -1;
             }
 
-            await repositorioTransacciones.Actualizar(transaccion, 
+            await repositorioTransacciones.Actualizar(transaccion,
                 modelo.MontoAnterior, modelo.CuentaAnteriorId);
 
             if (string.IsNullOrEmpty(modelo.UrlRetorno))
@@ -145,7 +221,7 @@ namespace ManejoPresupuesto.Controllers
             {
                 return LocalRedirect(modelo.UrlRetorno);
             }
-          
+
         }
 
         [HttpPost]
@@ -156,7 +232,7 @@ namespace ManejoPresupuesto.Controllers
 
             if (transaccion is null)
             {
-                return RedirectToAction("NoEncontrado","Home");
+                return RedirectToAction("NoEncontrado", "Home");
             }
             await repositorioTransacciones.Borrar(id);
 
