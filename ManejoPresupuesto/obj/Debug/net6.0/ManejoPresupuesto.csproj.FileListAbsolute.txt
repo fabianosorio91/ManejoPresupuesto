@@ -68,3 +68,10 @@ C:\Users\fosorio\Desktop\Curso Udemy\Proyectos\ManejoPresupuesto\ManejoPresupues
 C:\Users\fosorio\Desktop\Curso Udemy\Proyectos\ManejoPresupuesto\ManejoPresupuesto\obj\Debug\net6.0\ManejoPresupuesto.pdb
 C:\Users\fosorio\Desktop\Curso Udemy\Proyectos\ManejoPresupuesto\ManejoPresupuesto\obj\Debug\net6.0\ManejoPresupuesto.genruntimeconfig.cache
 C:\Users\fosorio\Desktop\Curso Udemy\Proyectos\ManejoPresupuesto\ManejoPresupuesto\obj\Debug\net6.0\ref\ManejoPresupuesto.dll
+C:\Users\fosorio\Desktop\Curso Udemy\Proyectos\ManejoPresupuesto\ManejoPresupuesto\bin\Debug\net6.0\ClosedXML.dll
+C:\Users\fosorio\Desktop\Curso Udemy\Proyectos\ManejoPresupuesto\ManejoPresupuesto\bin\Debug\net6.0\DocumentFormat.OpenXml.dll
+C:\Users\fosorio\Desktop\Curso Udemy\Proyectos\ManejoPresupuesto\ManejoPresupuesto\bin\Debug\net6.0\ExcelNumberFormat.dll
+C:\Users\fosorio\Desktop\Curso Udemy\Proyectos\ManejoPresupuesto\ManejoPresupuesto\bin\Debug\net6.0\Irony.dll
+C:\Users\fosorio\Desktop\Curso Udemy\Proyectos\ManejoPresupuesto\ManejoPresupuesto\bin\Debug\net6.0\SixLabors.Fonts.dll
+C:\Users\fosorio\Desktop\Curso Udemy\Proyectos\ManejoPresupuesto\ManejoPresupuesto\bin\Debug\net6.0\System.IO.Packaging.dll
+C:\Users\fosorio\Desktop\Curso Udemy\Proyectos\ManejoPresupuesto\ManejoPresupuesto\bin\Debug\net6.0\XLParser.dll

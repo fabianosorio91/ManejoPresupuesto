@@ -1,8 +1,6 @@
 ﻿using Dapper;
 using ManejoPresupuesto.Models;
 using Microsoft.Data.SqlClient;
-using Newtonsoft.Json;
-using System.Data;
 
 namespace ManejoPresupuesto.Servicios
 {
@@ -14,6 +12,7 @@ namespace ManejoPresupuesto.Servicios
         Task Crear(Transaccion transaccion);
         Task<IEnumerable<Transaccion>> ObtenerPorCuentaId(ObtenerTransaccionesPorCuenta modelo);
         Task<Transaccion> ObtenerPorId(int id, int usuarioId);
+        Task<IEnumerable<ResultadoObtenerPorMes>> ObtenerPorMes(int usuarioId, int año);
         Task<IEnumerable<ResultadoObtenerPorSemana>> ObtenerPorSemana(ParametroObtenerTransaccionesPorUsuario modelo);
         Task<IEnumerable<Transaccion>> ObtenerPorUsuarioId(ParametroObtenerTransaccionesPorUsuario modelo);
     }
@@ -67,7 +66,7 @@ namespace ManejoPresupuesto.Servicios
 
             return await connection.QueryAsync<Transaccion>
                 (@"SELECT T.Id, T.Monto, T.FechaTransaccion, C.Nombre AS Categoria,
-                    CU.Nombre AS Cuenta, C.TipoOperacionId
+                    CU.Nombre AS Cuenta, C.TipoOperacionId, Nota
 		            FROM  Transacciones T
 		            INNER JOIN  Categorias C 
                     ON C.Id = T.CategoriaId
@@ -121,6 +120,21 @@ namespace ManejoPresupuesto.Servicios
                     FechaTransaccion BETWEEN @fechaInicio AND @fechaFin
                     GROUP BY DATEDIFF (d, @fechaInicio, FechaTransaccion) /7, cat.TipoOperacionId
                     ", modelo);
+        
+        }
+
+        public async Task<IEnumerable<ResultadoObtenerPorMes>> ObtenerPorMes(int usuarioId, int año)
+        {
+            using var connection = new SqlConnection(connectionString);
+            return await connection.QueryAsync<ResultadoObtenerPorMes>(@"
+                    select MONTH(FechaTransaccion) as Mes,
+                    SUM(Monto) as Monto, cat.TipoOperacionId
+                    from Transacciones
+                    inner join Categorias cat
+                    on cat.Id = Transacciones.CategoriaId
+                    where Transacciones.UsuarioId = @usuarioId and YEAR(FechaTransaccion) = @Año
+                    group by MONTH (FechaTransaccion), cat.TipoOperacionId
+                    ", new { usuarioId, año});
         
         }
 

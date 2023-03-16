@@ -1,8 +1,11 @@
 ﻿using AutoMapper;
+using ClosedXML.Excel;
+using DocumentFormat.OpenXml.Presentation;
 using ManejoPresupuesto.Models;
 using ManejoPresupuesto.Servicios;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Data;
 
 namespace ManejoPresupuesto.Controllers
 {
@@ -97,14 +100,155 @@ namespace ManejoPresupuesto.Controllers
 
             return View(modelo);
         }
-        public IActionResult Mensaul()
+        public async Task<IActionResult> Mensual(int año)
         {
-            return View();
+            var usuarioId = servicioUsuarios.ObtenerUsuarioId();
+            if (año == 0)
+            {
+                año = DateTime.Today.Year;
+            }
+            var transaccionesPorMes = await repositorioTransacciones.ObtenerPorMes(usuarioId, año);
+
+            var transaccionesAgrupadas = transaccionesPorMes.GroupBy(x => x.Mes)
+                .Select(x => new ResultadoObtenerPorMes()
+            {
+                Mes = x.Key,
+                Ingreso = x.Where(x => x.TipoOperacionId == TipoOperacion.Ingreso)
+                .Select(x => x.Monto).FirstOrDefault(),
+                Gasto = x.Where(x => x.TipoOperacionId == TipoOperacion.Gasto)
+                .Select(x => x.Monto).FirstOrDefault(),
+            }).ToList();
+
+            for (int mes = 1; mes <= 12; mes++)
+            {
+                var transaccion = transaccionesAgrupadas.FirstOrDefault(x => x.Mes == mes);
+                var fechaReferencia = new DateTime(año, mes, 1);
+
+                if (transaccion == null)
+                {
+                    transaccionesAgrupadas.Add(new ResultadoObtenerPorMes()
+                    {
+                        Mes = mes,
+                        FechaReferencia = fechaReferencia
+                    });
+                }
+                else
+                {
+                    transaccion.FechaReferencia = fechaReferencia;
+                }
+            }
+
+            transaccionesAgrupadas = transaccionesAgrupadas.OrderByDescending(x => x.Mes).ToList();
+
+            var modelo = new ReporteMensualViewModel();
+            modelo.Año = año;
+            modelo.TransaccionesPorMes = transaccionesAgrupadas;
+
+            return View(modelo);
         }
+
+
         public IActionResult ExcelReporte()
         {
             return View();
         }
+
+        [HttpGet]
+        public async Task<FileResult> ExportarExcelPorMes(int mes, int año)
+        {
+            var fechaInicio = new DateTime(año, mes, 1);
+            var fechaFin = fechaInicio.AddMonths(1).AddDays(-1);
+            var usuarioId = servicioUsuarios.ObtenerUsuarioId();
+
+            var transacciones = await repositorioTransacciones.ObtenerPorUsuarioId(
+                new ParametroObtenerTransaccionesPorUsuario
+                {
+                    UsuarioId = usuarioId,
+                    FechaInicio = fechaInicio,
+                    FechaFin = fechaFin            
+                });
+
+            var nombreArchivo = $"Manejo Presupuesto - {fechaInicio.ToString("MMM yyyy")}.xlsx";
+            return GenerarExcel(nombreArchivo, transacciones);
+        }
+
+        [HttpGet]
+
+        public async Task<FileResult> ExportarExcelPorAño(int año)
+        {
+            var fechaInicio = new DateTime(año, 1, 1);
+            var fechaFin = fechaInicio.AddYears(1).AddDays(-1);
+            var usuarioId = servicioUsuarios.ObtenerUsuarioId();
+
+            var transacciones = await repositorioTransacciones.ObtenerPorUsuarioId(
+                new ParametroObtenerTransaccionesPorUsuario
+                {
+                    UsuarioId = usuarioId,
+                    FechaInicio = fechaInicio,
+                    FechaFin = fechaFin
+                });
+
+            var nombreArchivo = $"Manejo Presupuesto - {fechaInicio.ToString("yyyy")}.xlsx";
+                return GenerarExcel(nombreArchivo, transacciones);
+        }
+
+        [HttpGet]
+        public async Task<FileResult> ExportarExcelTodo()
+        {
+            var fechaInicio = DateTime.Today.AddYears(-100);
+            var fechaFin = DateTime.Today.AddYears(1000);
+            var usuarioId = servicioUsuarios.ObtenerUsuarioId();
+
+            var transacciones = await repositorioTransacciones.ObtenerPorUsuarioId(
+                new ParametroObtenerTransaccionesPorUsuario
+                {
+                    UsuarioId = usuarioId,
+                    FechaInicio = fechaInicio,
+                    FechaFin = fechaFin
+                });
+
+            var nombreArchivo = $"Manejo Presupuesto - {DateTime.Today.ToString("dd-MM-yyyy")}.xlsx";
+            return GenerarExcel(nombreArchivo, transacciones);
+        }
+
+
+        private FileResult GenerarExcel(string nombreArchivo, IEnumerable<Transaccion> transaccions)
+        {
+            DataTable dataTable = new DataTable("Transacciones");
+            dataTable.Columns.AddRange(new DataColumn[]
+            {
+                new DataColumn("Fecha"),
+                new DataColumn("Cuenta"),
+                new DataColumn("Categoria"),
+                new DataColumn("Nota"),
+                new DataColumn("Monto"),
+                new DataColumn("Ingreso/Gasto"),
+            });
+
+            foreach (var transaccion in transaccions)
+            {
+                dataTable.Rows.Add(transaccion.FechaTransaccion,
+                    transaccion.Cuenta,
+                    transaccion.Categoria,
+                    transaccion.Nota,
+                    transaccion.Monto,
+                    transaccion.TipoOperacionId);
+            }
+
+            using (XLWorkbook wb = new XLWorkbook())
+            {              
+                wb.Worksheets.Add(dataTable);
+
+                using (MemoryStream stream = new MemoryStream())
+                {
+                    wb.SaveAs(stream);
+                    return File(stream.ToArray(), 
+                        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet ", nombreArchivo);
+                }
+            }
+        }
+
+
         public IActionResult Calendario()
         {
             return View();
