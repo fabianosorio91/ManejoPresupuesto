@@ -1,5 +1,6 @@
 ﻿using ManejoPresupuesto.Models;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,7 +8,6 @@ namespace ManejoPresupuesto.Controllers
 {
     public class UsuariosController: Controller
     {
-
         public UsuariosController(UserManager<Usuario> userManager, SignInManager<Usuario> signInManager)
         {
             UserManager = userManager;
@@ -17,12 +17,13 @@ namespace ManejoPresupuesto.Controllers
         public UserManager<Usuario> UserManager { get; }
         public SignInManager<Usuario> SignInManager { get; }
 
+        [AllowAnonymous]
         public IActionResult Registro() 
         {
             return View();
         }
         [HttpPost]
-
+        [AllowAnonymous]
         public async Task<IActionResult>Registro (RegistroViewModel modelo)
         {
             if (!ModelState.IsValid)
@@ -47,6 +48,36 @@ namespace ManejoPresupuesto.Controllers
                 }
             }
             return View(modelo);
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> Login(LoginViewModel modelo)
+        {
+            if (!ModelState.IsValid)
+            {
+
+                return View(modelo);
+            }
+            var resultado = await SignInManager.PasswordSignInAsync(modelo.Email,
+                modelo.Password, modelo.Recuerdame, lockoutOnFailure: false);
+
+            if (resultado.Succeeded)
+            {
+                return RedirectToAction("Index", "Transacciones");
+            }
+            else
+            {
+                ModelState.AddModelError(string.Empty, "Nombre del Usuario ó contraseña Incorrecta.");
+                return View(modelo);
+            }
         }
 
         [HttpPost]
