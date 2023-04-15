@@ -10,7 +10,7 @@ namespace ManejoPresupuesto.Models
         [Required (ErrorMessage = "El campo {0} es requerido")]
         [PrimeraLetraMayuscula]
         //[Display (Name = "Nombre del tipo cuenta")]
-        [Remote(action: "VerificarExisteTipoCuenta", controller:"TiposCuentas")]
+        [Remote(action: "VerificarExisteTipoCuenta", controller:"TiposCuentas", AdditionalFields =nameof(Id))]
         public string Nombre { get; set; }
         public int UsuarioId { get; set; }
         public int Orden { get; set; }

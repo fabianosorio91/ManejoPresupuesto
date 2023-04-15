@@ -10,7 +10,7 @@ namespace ManejoPresupuesto.Servicios
         Task Actualizar(TipoCuenta tipoCuenta);
         Task Borrar(int id);
         Task Crear(TipoCuenta tipoCuenta);
-        Task<bool> Existe(string nombre, int usuarioId);
+        Task<bool> Existe(string nombre, int usuarioId, int id =0);
         Task<IEnumerable<TipoCuenta>> Obtener(int usuarioId);
         Task<TipoCuenta> ObtenerPorId(int id, int usuarioId);
         Task Ordenar(IEnumerable<TipoCuenta> tipoCuentasOrdenados);
@@ -36,15 +36,15 @@ namespace ManejoPresupuesto.Servicios
             tipoCuenta.Id = id;
         }
 
-        public async Task<bool> Existe(string nombre, int usuarioId)
+        public async Task<bool> Existe(string nombre, int usuarioId, int id = 0)
         {
             //query para verificar la existencia de un registro, sin traer la data de ese registro
             using var connection = new SqlConnection(connectionString);
             var existe = await connection.QueryFirstOrDefaultAsync<int>(@"
                                      SELECT 1
                                      FROM TiposCuentas
-                                     WHERE Nombre = @Nombre AND UsuarioID = @UsuarioId",
-                                     new {nombre, usuarioId});
+                                     WHERE Nombre = @Nombre AND UsuarioID = @UsuarioId AND Id <> @id",
+                                     new {nombre, usuarioId, id});
 
             return existe == 1;        
         }
